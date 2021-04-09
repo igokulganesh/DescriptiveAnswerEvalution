@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top">
+  <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+    <a href="index.html" class="logo d-flex align-items-center">
+      <img src="{% static 'assets/img/logo.png' %}" alt="">
+      <span>EasyExam</span>
+    </a>
+
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a class="nav-link scrollto active" href="{% url 'home' %}">Home</a></li>
+
+        {% if user.is_staff %}
+          <!-- <li><button class="btn btn" href="#createClass"><i class="bi bi-folder-plus"></i> Create</button></li> -->
+          <li><a href="{% url 'create_class' %}"><i class="bi bi-folder-plus"><span> Create</span></i></a>
+        {% else %}
+          <!-- <li><button class="btn btn" href="#joinClass"><i class="bi bi-folder-plus"></i> Join</button></li> -->
+          <li><a href="{% url 'join_class' %}"><i class="bi bi-folder-plus"><span> Join</span></i></a>
+        {% endif %}
+
+        <li class="dropdown"><a href="#"><span>{{ user.first_name }}</span><i class="bi bi-person-circle"></i></a>
+          <ul>
+            <li><a href="#">Profile</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            <li><a href="{% url 'home' %}#about">About us</a></li>
+            <li><a href="{% url 'home' %}#contact">Contact us</a></li>
+            <!-- <li><a href="#">Settings</a></li> -->
+          </ul>
+        </li>
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav><!-- .navbar -->
+
+  </div>
+</header>
+<!-- End Header -->
+{% endblock %}
+
+{% block main %}
+	
+  <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section class="breadcrumbs">
+      <div class="container">
+
+        <ol>
+          <li><a href="index.html">Home</a></li>
+          <li>Blog</li>
+        </ol>
+        <h2>Blog</h2>
+
+      </div>
+    </section><!-- End Breadcrumbs -->
+
+    <!-- ======= Blog Section ======= -->
+    <section id="blog" class="blog">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+
+          <div class="col-lg-8 entries">
+
+            <article class="entry">
+
+              <h2 class="entry-title">
+                <a href="blog-single.html">Dolorum optio tempore voluptas dignissimos cumque fuga qui quibusdam quia</a>
+              </h2>
+
+              <div class="entry-meta">
+                <ul>
+                  <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-single.html">John Doe</a></li>
+                  <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-single.html"><time datetime="2020-01-01">Jan 1, 2020</time></a></li>
+                  <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-single.html">12 Comments</a></li>
+                </ul>
+              </div>
+
+              <div class="entry-content">
+                <p>
+                  Similique neque nam consequuntur ad non maxime aliquam quas. Quibusdam animi praesentium. Aliquam et laboriosam eius aut nostrum quidem aliquid dicta.
+                  Et eveniet enim. Qui velit est ea dolorem doloremque deleniti aperiam unde soluta. Est cum et quod quos aut ut et sit sunt. Voluptate porro consequatur assumenda perferendis dolore.
+                </p>
+                <div class="read-more">
+                  <a href="blog-single.html">Read More</a>
+                </div>
+              </div>
+
+            </article><!-- End blog entry -->
+
+            <div class="blog-pagination">
+              <ul class="justify-content-center">
+                <li><a href="#">1</a></li>
+                <li class="active"><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+              </ul>
+            </div>
+
+          </div><!-- End blog entries list -->
+
+          <div class="col-lg-4">
+
+            <div class="sidebar">
+
+              <h3 class="sidebar-title">Search</h3>
+              <div class="sidebar-item search-form">
+                <form action="">
+                  <input type="text">
+                  <button type="submit"><i class="bi bi-search"></i></button>
+                </form>
+              </div><!-- End sidebar search formn-->
+
+              <h3 class="sidebar-title">Categories</h3>
+              <div class="sidebar-item categories">
+                <ul>
+                  
+                  {% if user.is_staff %}
+                  <li><a href="#">All</a></li>
+                  <li><a href="#">To Review</a></li>
+                  <li><a href="#">Reviewed</a></li>
+                  {% else %}
+                  <li><a href="#">All</a></li>
+                  <li><a href="#">Assigned</a></li>
+                  <li><a href="#">Missing</a></li>
+                  <li><a href="#">Done</a></li>
+                  {% endif %}
+                </ul>
+              </div><!-- End sidebar categories-->
+
+            </div><!-- End sidebar -->
+
+          </div><!-- End blog sidebar -->
+
+        </div>
+
+      </div>
+    </section><!-- End Blog Section -->
+
+  </main><!-- End #main -->
+
+
+{% endblock %}

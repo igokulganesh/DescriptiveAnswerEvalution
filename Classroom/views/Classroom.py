@@ -1,0 +1,78 @@
+from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from ..models import Classroom, Enrollment, Test, Question, Answer
+from ..decorators import teacher_required
+
+from django.http import HttpResponse
+
+def home(request):
+	return render(request, 'classroom/home.html' )
+
+@login_required(login_url='login')
+def dashboard(request):
+	colors = ['blue', 'orange', 'green', 'red', 'purple', 'pink' ]
+	
+	if request.user.is_staff:
+		rooms = Classroom.objects.filter(owner=request.user).values()
+	else:
+		enroll = list(Enrollment.objects.filter(student=request.user).values('room_id'))
+		d = []
+		for e in enroll: 
+			d.append( e['room_id'] )
+		rooms = Classroom.objects.filter(pk__in=d).values()
+
+	rooms = list(rooms)
+	for i in range(len(rooms)):
+		rooms[i]["color"] = colors[i%6]
+		rooms[i]["delay"] = i+2 * 100  
+
+	return render(request, 'classroom/dashboard.html', { 'rooms' : rooms })
+
+@login_required(login_url='login')
+def view_class(request):
+	return render(request, 'classroom/view_class.html')
+
+
+def signup(request):
+	if request.method == "POST":
+		name 	 = request.POST['name']
+		email 	 = request.POST['email'] # Email as username
+		password = request.POST['password']
+
+		is_staff = request.POST.get('is_staff', False)
+
+		if is_staff == 'on':
+			is_staff = True 
+		else: 
+			is_staff = False
+
+		user = User.objects.create_user(first_name=name, email=email, username=email, password=password, is_staff=is_staff)
+		user.save()
+
+		# user = authenticate(username=email, password=password)
+		# auth_login(request, user)
+
+		return redirect('login')
+
+	return render(request, 'classroom/login.html')
+
+def login(request):
+	if request.method == "POST": 
+		email = request.POST['email']
+		password = request.POST['password']
+
+		user = authenticate(username=email, password=password)
+
+		if user is not None:
+			auth_login(request, user)
+			return redirect('dashboard')
+		else:
+			messages.error(request,'Username or password incorrect')
+	return render(request, 'classroom/login.html')
+
+def logout(request):
+	auth_logout(request)
+	return redirect('home')
