@@ -28,9 +28,9 @@ class Enrollment(models.Model):
 class Test(models.Model):
 	belongs = models.ForeignKey(Classroom, on_delete=models.CASCADE) 
 	name = models.CharField(max_length=255)
-	create_time = models.DateTimeField()
-	assigned_time = models.DateTimeField()
-	due_time = models.DateTimeField()
+	create_time = models.DateTimeField(auto_now_add=True)
+	assigned_time = models.DateTimeField(blank=True)
+	due_time = models.DateTimeField(blank=True)
 
 	def __str__(self):
 		return self.name

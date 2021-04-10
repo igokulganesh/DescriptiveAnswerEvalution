@@ -7,7 +7,7 @@ urlpatterns = [
 	# For Classroom
 	path('', Classroom.home, name='home'),
 	path('dashboard', Classroom.dashboard, name='dashboard'),
-	path('view_class', Classroom.view_class, name='view_class'),
+	path('<int:class_id>/view_class', Classroom.view_class, name='view_class'),
 
 	path('signup', Classroom.signup, name='signup'),
 	path('login', Classroom.login, name='login'),

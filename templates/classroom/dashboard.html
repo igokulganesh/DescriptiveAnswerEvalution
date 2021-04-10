@@ -6,7 +6,7 @@
 <header id="header" class="header fixed-top">
   <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-    <a href="index.html" class="logo d-flex align-items-center">
+    <a href="{% url 'home' %}" class="logo d-flex align-items-center">
       <img src="{% static 'assets/img/logo.png' %}" alt="">
       <span>EasyExam</span>
     </a>
@@ -57,7 +57,7 @@
 
         	{% for r in rooms %}
 						<div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ r.delay }}">
-              <a href="{% url 'view_class' %}">
+              <a href="{% url 'view_class' r.id  %}">
 	            <div class="service-box {{ r.color }}">
 	              <i class="ri-discuss-line icon"></i>
 	              <h3> {{r.name}} </h3>
