@@ -67,22 +67,29 @@
                 <a href="{% url 'view_test' t.id %}">{{ t }}</a>
               </h2>
 
-              <div class="entry-meta">
-                <ul>
-                  <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="{% url 'view_test' t.id %}">
-                    <time>{{ t.due_time }}</time></a>
-                  </li>
-                </ul>
-              </div>
-
               <div class="entry-content">
                 <p>
                   {{ t.desc }}
                 </p>
-                <div class="read-more">
-                  <a href="{% url 'view_test' t.id %}">View</a>
-                </div>
               </div>
+
+              <div class="entry-meta">
+                <ul>
+                  {% if t.start_time %}
+                 
+                  <li class="d-flex align-items-center"><i class="bi bi-alarm"></i>
+                    Start time : {{ t.start_time }}
+                  </li>
+                  {% endif %}
+
+                  {% if t.end_time %}
+                  <li class="d-flex align-items-center"><i class="bi bi-clock-history"></i>
+                    End Time : {{ t.end_time }}
+                  </li>
+                  {% endif %}
+                </ul>
+              </div>
+
 
             </article><!-- End blog entry -->
             {% endfor %}

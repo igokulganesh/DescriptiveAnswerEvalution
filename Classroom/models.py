@@ -30,8 +30,8 @@ class Test(models.Model):
 	name = models.CharField(max_length=255)
 	desc = models.CharField(max_length=255, blank=True)
 	create_time = models.DateTimeField(auto_now_add=True)
-	end_time = models.DateTimeField(blank=True, null=True)
 	start_time = models.DateTimeField(blank=True, null=True)
+	end_time = models.DateTimeField(blank=True, null=True)
 
 	def __str__(self):
 		return self.name

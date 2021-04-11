@@ -20,5 +20,6 @@ urlpatterns = [
 	path('create_class', Teachers.create_class, name='create_class'),
 	path('<int:class_id>/create_test', Teachers.create_test, name='create_test'),
 	path('<int:test_id>/view_test', Teachers.view_test, name='view_test'),
+	path('<int:test_id>/create_qn', Teachers.create_qn, name='create_qn'),
 
 ]

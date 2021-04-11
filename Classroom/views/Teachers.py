@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from ..decorators import teacher_required
 from ..models import Classroom, Enrollment, Test, Question, Answer
-from ..forms import CreateTestForm
+from ..forms import CreateTestForm, CreateQnForm
 from datetime import datetime
 
 
@@ -60,10 +60,28 @@ def create_test(request, class_id):
 @teacher_required
 def view_test(request, test_id):
 	qns = Question.objects.filter(test=test_id)
-	return render(request, 'teachers/view_test.html', { 'qns' : qns } )
+	return render(request, 'teachers/view_test.html', { 'qns' : qns, 'test_id' : test_id } )
 
 
 @login_required(login_url='login')
 @teacher_required
-def create_Qn(request, test_id):
-	pass 
+def create_qn(request, test_id):
+	form = CreateQnForm(request.POST or None, request.FILES or None)
+	if request.method == "POST":
+		form = CreateQnForm(request.POST)
+
+		if form.is_valid():
+			text = form.cleaned_data.get('qn_text')
+			key = form.cleaned_data.get('key')
+			max_score = form.cleaned_data.get('max_score')
+			
+			test = get_object_or_404(Test, id=test_id)
+
+			qn = Question(test=test, qn_text=text, key=key, max_score=max_score)
+			qn.save()
+
+			return redirect('view_test', test_id)
+		else: 
+			messages.error(request, form.errors)
+
+	return render(request, 'teachers/create_qn.html', {'form': form, 'test_id' : test_id })
