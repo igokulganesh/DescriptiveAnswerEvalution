@@ -28,12 +28,20 @@ class Enrollment(models.Model):
 class Test(models.Model):
 	belongs = models.ForeignKey(Classroom, on_delete=models.CASCADE) 
 	name = models.CharField(max_length=255)
+	desc = models.CharField(max_length=255, blank=True)
 	create_time = models.DateTimeField(auto_now_add=True)
-	assigned_time = models.DateTimeField(blank=True)
+	posting_time = models.DateTimeField(blank=True)
 	due_time = models.DateTimeField(blank=True)
 
 	def __str__(self):
 		return self.name
+
+class testTaken(models.Model):
+	class Meta:
+		unique_together = (('test', 'student'),)
+	
+	test =  models.ForeignKey(Test, on_delete=models.CASCADE)
+	student = models.ForeignKey(User, on_delete=models.CASCADE) # students enrolled 
 
 class Question(models.Model):
 	test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name='questions')

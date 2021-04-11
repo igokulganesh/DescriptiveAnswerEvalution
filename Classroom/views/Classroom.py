@@ -34,7 +34,7 @@ def dashboard(request):
 @login_required(login_url='login')
 def view_class(request, class_id):
 	tests = Test.objects.filter(belongs=class_id)
-	return render(request, 'classroom/view_class.html', {'tests' : tests} )
+	return render(request, 'classroom/view_class.html', {'tests' : tests, 'class_id' : class_id } )
 
 
 def signup(request):

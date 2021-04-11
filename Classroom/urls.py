@@ -17,6 +17,7 @@ urlpatterns = [
 	path('join_class', Students.join_class, name='join_class'),
 
 	# For Teachers 
-	path('create', Teachers.create_class, name='create_class'),
+	path('create_class', Teachers.create_class, name='create_class'),
+	path('<int:class_id>/create_test', Teachers.create_test, name='create_test'),
 
 ]
