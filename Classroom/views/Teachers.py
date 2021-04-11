@@ -1,5 +1,5 @@
 from django.contrib.auth import login, authenticate
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -7,6 +7,7 @@ from django.db import IntegrityError
 from ..decorators import teacher_required
 from ..models import Classroom, Enrollment, Test, Question, Answer
 from ..forms import CreateTestForm
+from datetime import datetime
 
 
 @login_required(login_url='login')
@@ -41,19 +42,25 @@ def create_test(request, class_id):
 		if form.is_valid():
 			name = form.cleaned_data.get('name')
 			desc = form.cleaned_data.get('desc')
-			posting_time = form.cleaned_data.get('posting_time')
-			due_time = form.cleaned_data.get('due_time')
+			start_time = form.cleaned_data.get('start_time')
+			end_time = form.cleaned_data.get('end_time')
 			
-			belongs = get_object_or_404(Classroom, belongs=class_id)
+			belongs = get_object_or_404(Classroom, id=class_id)
 
-			test = Test(belongs=belongs, name=name, desc=desc, posting_time=posting_time, due_time=due_time)
-			test.save() 
+			test = Test(belongs=belongs, name=name, desc=desc, start_time=start_time, end_time=end_time)
+			test.save()
 
-			return view_class(request, class_id)
+			return redirect('view_class', class_id)
 		else: 
 			messages.error(request, form.errors)
 
-	return render(request, 'teachers/create_test.html', {'form': form})
+	return render(request, 'teachers/create_test.html', {'form': form, 'class_id' : class_id })
+
+@login_required(login_url='login')
+@teacher_required
+def view_test(request, test_id):
+	qns = Question.objects.filter(test=test_id)
+	return render(request, 'teachers/view_test.html', { 'qns' : qns } )
 
 
 @login_required(login_url='login')
