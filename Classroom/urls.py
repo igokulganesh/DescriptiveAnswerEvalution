@@ -15,6 +15,9 @@ urlpatterns = [
 	
 	# For Students 
 	path('join_class', Students.join_class, name='join_class'),
+	path('<int:test_id>/attend_test', Students.attend_test, name='attend_test'),
+	path('<int:test_id>/submit_test', Students.submit_test, name='submit_test'),
+	path('<int:test_id>/review_test', Students.review_test, name='review_test'),
 
 	# For Teachers 
 	path('create_class', Teachers.create_class, name='create_class'),

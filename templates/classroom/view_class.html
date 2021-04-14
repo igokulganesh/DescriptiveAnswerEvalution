@@ -63,9 +63,15 @@
             {% for t in tests %}
             <article class="entry">
 
+              {% if user.is_staff %}
               <h2 class="entry-title">
                 <a href="{% url 'view_test' t.id %}">{{ t }}</a>
               </h2>
+              {% else %}
+              <h2 class="entry-title">
+                <a href="{% url 'attend_test' t.id %}">{{ t }}</a>
+              </h2>
+              {% endif %}
 
               <div class="entry-content">
                 <p>

@@ -28,7 +28,7 @@ class Enrollment(models.Model):
 class Test(models.Model):
 	belongs = models.ForeignKey(Classroom, on_delete=models.CASCADE) 
 	name = models.CharField(max_length=255)
-	desc = models.CharField(max_length=255, blank=True)
+	desc = models.CharField(max_length=2555, blank=True)
 	create_time = models.DateTimeField(auto_now_add=True)
 	start_time = models.DateTimeField(blank=True, null=True)
 	end_time = models.DateTimeField(blank=True, null=True)
@@ -41,7 +41,8 @@ class testTaken(models.Model):
 		unique_together = (('test', 'student'),)
 	
 	test =  models.ForeignKey(Test, on_delete=models.CASCADE)
-	student = models.ForeignKey(User, on_delete=models.CASCADE) # students enrolled 
+	student = models.ForeignKey(User, on_delete=models.CASCADE) 
+	submittedAt = models.DateTimeField(blank=True, null=True)
 
 class Question(models.Model):
 	test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name='questions')
