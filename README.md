@@ -1,2 +1,2 @@
-# DescriptiveAnswerEvalution
- Evaluating Descriptive Answer Evalution
+# EasyExam 
+  Evaluating Descriptive Answer using Machine Learning
