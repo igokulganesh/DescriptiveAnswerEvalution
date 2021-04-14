@@ -49,6 +49,10 @@ def submit_test(request, test_id):
 	qns = Question.objects.filter(test=test_id)
 	test = get_object_or_404(Test, id=test_id)
 	student = request.user 
+
+	if testTaken.objects.filter(test=test, student=request.user).exists():
+		return redirect('review_test', test_id)
+
 	testTaken(test=test, student=student).save() 
 
 	for q in qns:
@@ -61,4 +65,5 @@ def submit_test(request, test_id):
 @login_required(login_url='login')
 @student_required
 def review_test(request, test_id):
+	test = get_object_or_404(Test, id=test_id)
 	return redirect('dashboard')

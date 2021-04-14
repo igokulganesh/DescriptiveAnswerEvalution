@@ -13,8 +13,13 @@
 			    <div class="row">
 			    	<p class="lead col-sm">{{ test.desc }}</p>
 	          {% if test.end_time %}
-	          <p class="col-sm" style="color: red;" align="right"><i class="bi bi-clock-history"></i>
-	              End Time : {{ test.end_time }}</p>
+             <p class="col-sm" align="right" style="color: red;">
+             	<i class="bi bi-clock-history"></i>
+             	<span id="days"> </span>
+             	<span id="hours"> </span>
+             	<span id="minutes"> </span>
+             	<span id="seconds"> </span> 
+             </p>
 	          {% endif %}
 	         </div>
 			  </div>
@@ -32,7 +37,7 @@
 	    </ul>
 		</div>
 	  <div class="card-body">
-	  	<form method="POST" action="{% url 'submit_test' test.id  %}">
+	  	<form id="myform" method="POST" action="{% url 'submit_test' test.id  %}">
 	  		{% csrf_token %}
 	  		{% for q in qns %}
 	  		<br>
@@ -49,4 +54,50 @@
 </div>
 
 <br><br>
+
+
+<script type="text/javascript">
+
+function convertTZ(date, tzString) {
+  return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}))   
+}
+
+function makeTimer() 
+{
+	var endTime = new Date({{ test.end_time|date:"U" }} * 1000);
+	endTime = (Date.parse(endTime) / 1000);
+
+  var now = new Date();
+  convertTZ(now, "Asia/Kolkata")
+  now = (Date.parse(now) / 1000);
+
+  var timeLeft = endTime - now;
+
+  var days = Math.floor(timeLeft / 86400);
+  var hours = Math.floor((timeLeft - (days * 86400)) / 3600);
+  var minutes = Math.floor((timeLeft - (days * 86400) - (hours * 3600 )) / 60);
+  var seconds = Math.floor((timeLeft - (days * 86400) - (hours * 3600) - (minutes * 60)));
+
+  if(days < 0)
+  {
+  	document.forms.myform.submit();
+  }
+
+  if (hours < "10") { hours = "0" + hours; }
+  if (minutes < "10") { minutes = "0" + minutes; }
+  if (seconds < "10") { seconds = "0" + seconds; }
+
+  $("#days").html(days + "<span> Days</span>");
+  $("#hours").html(hours + "<span> Hrs</span>");
+  $("#minutes").html(minutes + "<span> Min</span>");
+  $("#seconds").html(seconds + "<span> Sec</span>");
+
+}
+
+setInterval(function() { makeTimer(); }, 1000);
+</script>
+
 {% endblock %}
+
+
+
