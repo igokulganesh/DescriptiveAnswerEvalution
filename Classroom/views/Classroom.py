@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from ..models import Classroom, Enrollment, Test, Question, Answer
 from ..decorators import teacher_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.http import HttpResponse
 
@@ -33,7 +34,19 @@ def dashboard(request):
 
 @login_required(login_url='login')
 def view_class(request, class_id):
-	tests = Test.objects.filter(belongs=class_id)
+	tests = Test.objects.filter(belongs=class_id).order_by('-create_time')
+
+	# paginator 
+	paginator = Paginator(tests, 5)
+	page = request.GET.get('page', 1)
+
+	try:
+		tests = paginator.page(page)
+	except PageNotAnInteger:
+		tests = paginator.page(1)
+	except EmptyPage:
+		tests = paginator.page(paginator.num_pages)
+
 	return render(request, 'classroom/view_class.html', {'tests' : tests, 'class_id' : class_id } )
 
 

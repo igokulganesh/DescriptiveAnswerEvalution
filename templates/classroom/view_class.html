@@ -100,13 +100,29 @@
             </article><!-- End blog entry -->
             {% endfor %}
 
+            {% if tests.has_other_pages %}
             <div class="blog-pagination">
               <ul class="justify-content-center">
-                <li><a href="#">1</a></li>
-                <li class="active"><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
+                
+                {% if tests.has_previous %}
+                  <li><a href="?page={{ tests.previous_page_number }}">&laquo;</a></li>
+                {% endif %}
+
+                {% for i in tests.paginator.page_range %}
+                  {% if tests.number == i %}
+                    <li class="active"><a>{{ i }}</a></li>
+                  {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                
+                {% if tests.has_next %}
+                  <li><a href="?page={{ tests.next_page_number }}">&raquo;</a></li>
+                {% endif %}
               </ul>
             </div>
+            {% endif %}
+            
 
           </div><!-- End blog entries list -->
 

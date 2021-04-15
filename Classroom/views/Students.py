@@ -5,7 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from ..decorators import student_required
 from ..models import Classroom, Enrollment, Test, Question, Answer, testTaken
-
+from itertools import chain
 
 @login_required(login_url='login')
 @student_required
@@ -66,4 +66,18 @@ def submit_test(request, test_id):
 @student_required
 def review_test(request, test_id):
 	test = get_object_or_404(Test, id=test_id)
-	return redirect('dashboard')
+	qns = Question.objects.filter(test=test_id)
+	student = request.user 
+	ans = []
+	tot = 0
+	act = 0  
+	for i in range(len(qns)) :
+		d = {} 
+		d['qns'] = qns[i] 
+		d['ans'] = get_object_or_404(Answer, student=student, question=qns[i]) # Answer.objects.filter(student=student, question=qns[i]) 
+		ans.append(d)
+		act += d['ans'].actual_score  
+		tot = qns[i].max_score 
+
+	mark = "{} / {}".format(act, tot)
+	return render(request, 'students/review_test.html', { 'test' : test, 'ans' : ans, 'mark' : mark })

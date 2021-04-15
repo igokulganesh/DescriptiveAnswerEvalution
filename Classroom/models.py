@@ -32,6 +32,7 @@ class Test(models.Model):
 	create_time = models.DateTimeField(auto_now_add=True)
 	start_time = models.DateTimeField(blank=True, null=True)
 	end_time = models.DateTimeField(blank=True, null=True)
+	# test_mark = models.PositiveSmallIntegerField(default=0)
 
 	def __str__(self):
 		return self.name
