@@ -7,6 +7,7 @@ from ..decorators import student_required
 from ..models import Classroom, Enrollment, Test, Question, Answer, testTaken
 import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 
 
 @login_required(login_url='login')
@@ -89,6 +90,38 @@ def review_test(request, test_id):
 @student_required
 def assigned_test(request, class_id):
 	tests = Test.objects.filter(belongs=class_id, start_time__lt=datetime.datetime.now(), end_time__gt=datetime.datetime.now()).order_by('-create_time')
+
+	# Search
+	search = request.GET.get('search')
+
+	if search != "" and search is not None:
+		tests = Test.objects.filter(belongs=class_id, name__icontains=search).order_by('-create_time')
+
+
+	# paginator 
+	paginator = Paginator(tests, 5)
+	page = request.GET.get('page', 1)
+
+	try:
+		tests = paginator.page(page)
+	except PageNotAnInteger:
+		tests = paginator.page(1)
+	except EmptyPage:
+		tests = paginator.page(paginator.num_pages)
+
+	return render(request, 'classroom/view_class.html', {'tests' : tests, 'class_id' : class_id } )
+
+
+@login_required(login_url='login')
+@student_required
+def missing_test(request, class_id):
+	tests = Test.objects.filter(belongs=class_id)
+	taken = list(testTaken.objects.filter(~Q(student=request.user), test__in=tests).values("test"))
+
+	d = []
+	for t in taken: 
+		d.append( t['test'] )
+	tests = Test.objects.filter(pk__in=d, belongs=class_id)
 
 	# Search
 	search = request.GET.get('search')

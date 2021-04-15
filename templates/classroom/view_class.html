@@ -149,7 +149,7 @@
                   {% else %}
                   <li><a href="{% url 'view_class' class_id %}">All</a></li>
                   <li><a href="{% url 'assigned_test' class_id %}">Assigned</a></li>
-                  <li><a href="#">Missing</a></li>
+                  <li><a href="{% url 'missing_test' class_id %}">Missing</a></li>
                   <li><a href="#">Done</a></li>
                   {% endif %}
                 </ul>
