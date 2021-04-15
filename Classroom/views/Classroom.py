@@ -72,7 +72,15 @@ def view_class(request, class_id):
 
 @login_required(login_url='login')
 def people(request, class_id):
-	pass
+	teacher = get_object_or_404(Classroom, id=class_id).owner
+	enroll = Enrollment.objects.filter(room=class_id)
+
+	student = [] 
+	for e in enroll:
+		student.append(e.student)
+	
+	print(student)
+	return render(request, "classroom/people.html", { 'teacher' : teacher, 'student' : student })
 
 
 def signup(request):

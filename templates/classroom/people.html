@@ -1,0 +1,26 @@
+{% extends 'common.html' %}
+{% load static %}
+
+{% block main %}
+
+<div class="jumbotron jumbotron-fluid" align="container">
+  <div class="container" style="width: 50%">
+    <h1 class="display-4">People</h1>
+    <p class="lead">Teachers and Students in this Classroom</p>
+
+    <h1> Teacher </h1>
+		<h6>{{ teacher.first_name }}</h6>
+
+		<ul class="list-group">
+		  <li class="list-group-item active"> Students </li>
+		  {% for s in student %}
+		  	<li class="list-group-item">{{ s.first_name }}</li>
+			{% endfor %}
+		</ul>
+
+
+  </div>
+</div>
+
+
+{% endblock %}
