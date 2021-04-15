@@ -132,8 +132,8 @@
 
               <h3 class="sidebar-title">Search</h3>
               <div class="sidebar-item search-form">
-                <form action="">
-                  <input type="text">
+                <form action="" method="GET">
+                  <input type="text" name="search" placeholder="Search">
                   <button type="submit"><i class="bi bi-search"></i></button>
                 </form>
               </div><!-- End sidebar search formn-->
@@ -143,12 +143,12 @@
                 <ul>
                   
                   {% if user.is_staff %}
-                  <li><a href="#">All</a></li>
+                  <li><a href="{% url 'view_class' class_id %}">All</a></li>
                   <li><a href="#">To Review</a></li>
                   <li><a href="#">Reviewed</a></li>
                   {% else %}
-                  <li><a href="#">All</a></li>
-                  <li><a href="#">Assigned</a></li>
+                  <li><a href="{% url 'view_class' class_id %}">All</a></li>
+                  <li><a href="{% url 'assigned_test' class_id %}">Assigned</a></li>
                   <li><a href="#">Missing</a></li>
                   <li><a href="#">Done</a></li>
                   {% endif %}

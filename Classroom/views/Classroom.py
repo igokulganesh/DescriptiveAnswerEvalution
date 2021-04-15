@@ -36,6 +36,13 @@ def dashboard(request):
 def view_class(request, class_id):
 	tests = Test.objects.filter(belongs=class_id).order_by('-create_time')
 
+	# Search
+	search = request.GET.get('search')
+
+	if search != "" and search is not None:
+		tests = Test.objects.filter(belongs=class_id, name__icontains=search).order_by('-create_time')
+
+
 	# paginator 
 	paginator = Paginator(tests, 5)
 	page = request.GET.get('page', 1)
