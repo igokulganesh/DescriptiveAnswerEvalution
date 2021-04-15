@@ -67,7 +67,12 @@ def view_class(request, class_id):
 
 	room = get_object_or_404(Classroom, id=class_id)
 
-	return render(request, 'classroom/view_class.html', {'tests' : tests, 'room' : room } )
+	if request.user.is_staff :
+		template = "teachers/view_class.html"
+	else:
+		template = "students/view_class.html"
+
+	return render(request, template, {'tests' : tests, 'room' : room } )
 
 
 def signup(request):
