@@ -54,132 +54,121 @@
     </section><!-- End Breadcrumbs -->
 
     <!-- ======= Blog Section ======= -->
-    <section id="blog" class="blog">
-      <div class="container" data-aos="fade-up">
-
-        <div class="row">
-
-          <div class="col-lg-8 entries">
-
-            {% for t in tests %}
-            <article class="entry">
-
-              {% if user.is_staff %}
-              <h2 class="entry-title">
-                <a href="{% url 'view_test' t.id %}">{{ t }}</a>
-              </h2>
-              {% elif t.status == "late"  %}
-              <h2 class="entry-title">
-                <a>{{ t }}</a>
-              </h2>
-              {% else  %}
-              <h2 class="entry-title">
-                <a href="{% url 'attend_test' t.id %}">{{ t }}</a>
-              </h2>
-              {% endif %}
-
-              <div class="entry-content">
-                <p>
-                  {{ t.desc }}
-                </p>
-
-                {% if t.status == "Assigned" %}
-                <p style="color: green;"> Assigned  </p>
-                {% endif %}
-
-                {% if t.status == "late" %}
-                <p style="color: red;"> Time Out</p>
-                {% endif %}
-
-                {% if t.status == "done" %}
-                <p style="color: green;"> Completed </p>
-                {% endif %}
-
-
-              </div>
-
-              <div class="entry-meta">
-                <ul>
-                  {% if t.start_time %}
-                 
-                  <li class="d-flex align-items-center"><i class="bi bi-alarm"></i>
-                    Start time : {{ t.start_time }}
-                  </li>
-                  {% endif %}
-
-                  {% if t.end_time %}
-                  <li class="d-flex align-items-center"><i class="bi bi-clock-history"></i>
-                    End Time : {{ t.end_time }}
-                  </li>
-                  {% endif %}
-                </ul>
-              </div>
-
-
-            </article><!-- End blog entry -->
-            {% endfor %}
-
-            {% if tests.has_other_pages %}
-            <div class="blog-pagination">
-              <ul class="justify-content-center">
-                
-                {% if tests.has_previous %}
-                  <li><a href="?page={{ tests.previous_page_number }}">&laquo;</a></li>
-                {% endif %}
-
-                {% for i in tests.paginator.page_range %}
-                  {% if tests.number == i %}
-                    <li class="active"><a>{{ i }}</a></li>
-                  {% else %}
-                    <li><a href="?page={{ i }}">{{ i }}</a></li>
-                  {% endif %}
-                {% endfor %}
-                
-                {% if tests.has_next %}
-                  <li><a href="?page={{ tests.next_page_number }}">&raquo;</a></li>
-                {% endif %}
-              </ul>
-            </div>
-            {% endif %}
-            
-
-          </div><!-- End blog entries list -->
-
-          <div class="col-lg-4">
-
-            <div class="sidebar">
-
-              <h3 class="sidebar-title">Search</h3>
-              <div class="sidebar-item search-form">
-                <form action="" method="GET">
-                  <input type="text" name="search" placeholder="Search">
-                  <button type="submit"><i class="bi bi-search"></i></button>
-                </form>
-              </div><!-- End sidebar search formn-->
-                  
-                  {% if user.is_staff %}
-
-                  {% else %}
-                  <h3 class="sidebar-title">Categories</h3>
-                  <div class="sidebar-item categories">
-                    <ul>
-                      <li><a href="{% url 'view_class' room.id %}">All</a></li>
-                      <li><a href="{% url 'assigned_test' room.id %}">Assigned</a></li>
-                      <li><a href="{% url 'missing_test' room.id %}">Missing</a></li>
-                      <li><a href="{% url 'done_test' room.id %}">Done</a></li>
-                    </ul>
-                  </div><!-- End sidebar categories-->
-                  {% endif %}
-
-
-            </div><!-- End sidebar -->
-
-          </div><!-- End blog sidebar -->
-
-        </div>
-
+    <br>
+  <div class="d-flex justify-content-center">
+    <div class="card" style="width: 90%";>
+      <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+          <li class="nav-item">
+            <a class="nav-link active" href="">Tests</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'People' room.id %}">People</a>
+          </li>
+        </ul>
       </div>
-    </section><!-- End Blog Section -->
+      <div class="card-body">
+        <section id="blog" class="blog">
+          <div class="container" data-aos="fade-up">
+            <div class="row">
+              <div class="col-lg-8 entries">
+
+                {% for t in tests %}
+                <article class="entry">
+
+                  {% if user.is_staff %}
+                  <h2 class="entry-title">
+                    <a href="{% url 'view_test' t.id %}">{{ t }}</a>
+                  </h2>
+                  {% elif t.status == "late"  %}
+                  <h2 class="entry-title">
+                    <a>{{ t }}</a>
+                  </h2>
+                  {% else  %}
+                  <h2 class="entry-title">
+                    <a href="{% url 'attend_test' t.id %}">{{ t }}</a>
+                  </h2>
+                  {% endif %}
+
+                  <div class="entry-content">
+                    <p>
+                      {{ t.desc }}
+                    </p>
+
+                    {% if t.status == "Assigned" %}
+                    <p style="color: green;"> Assigned  </p>
+                    {% endif %}
+
+                    {% if t.status == "late" %}
+                    <p style="color: red;"> Time Out</p>
+                    {% endif %}
+
+                    {% if t.status == "done" %}
+                    <p style="color: green;"> Completed </p>
+                    {% endif %}
+
+
+                  </div>
+
+                  <div class="entry-meta">
+                    <ul>
+                      {% if t.start_time %}
+                     
+                      <li class="d-flex align-items-center"><i class="bi bi-alarm"></i>
+                        Start time : {{ t.start_time }}
+                      </li>
+                      {% endif %}
+
+                      {% if t.end_time %}
+                      <li class="d-flex align-items-center"><i class="bi bi-clock-history"></i>
+                        End Time : {{ t.end_time }}
+                      </li>
+                      {% endif %}
+                    </ul>
+                  </div>
+                </article><!-- End blog entry -->
+                {% endfor %}
+
+                {% if tests.has_other_pages %}
+                <div class="blog-pagination">
+                  <ul class="justify-content-center">
+                    
+                    {% if tests.has_previous %}
+                      <li><a href="?page={{ tests.previous_page_number }}">&laquo;</a></li>
+                    {% endif %}
+
+                    {% for i in tests.paginator.page_range %}
+                      {% if tests.number == i %}
+                        <li class="active"><a>{{ i }}</a></li>
+                      {% else %}
+                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                      {% endif %}
+                    {% endfor %}
+                    
+                    {% if tests.has_next %}
+                      <li><a href="?page={{ tests.next_page_number }}">&raquo;</a></li>
+                    {% endif %}
+                  </ul>
+                </div>
+                {% endif %}
+              </div><!-- End blog entries list -->
+              <div class="col-lg-4">
+                <div class="sidebar">
+                  <h3 class="sidebar-title">Search</h3>
+                  <div class="sidebar-item search-form">
+                    <form action="" method="GET">
+                      <input type="text" name="search" placeholder="Search">
+                      <button type="submit"><i class="bi bi-search"></i></button>
+                    </form>
+                  </div><!-- End sidebar search formn-->
+                </div><!-- End sidebar -->
+              </div><!-- End blog sidebar -->
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
 
   </main><!-- End #main -->
 
