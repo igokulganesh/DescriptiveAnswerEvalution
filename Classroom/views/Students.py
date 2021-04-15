@@ -6,7 +6,6 @@ from django.contrib.auth.decorators import login_required
 from ..decorators import student_required
 from ..models import Classroom, Enrollment, Test, Question, Answer, testTaken
 import datetime
-import pytz
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q

@@ -3,8 +3,9 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from ..models import Classroom, Enrollment, Test, Question, Answer
+from ..models import Classroom, Enrollment, Test, Question, Answer, testTaken
 from ..decorators import teacher_required
+from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.http import HttpResponse
@@ -53,6 +54,17 @@ def view_class(request, class_id):
 		tests = paginator.page(1)
 	except EmptyPage:
 		tests = paginator.page(paginator.num_pages)
+
+
+	if request.user.is_staff == False :
+		for t in tests:
+			if testTaken.objects.filter(student=request.user, test=t).exists():
+				t.status = "done"
+			elif ( t.start_time == None or t.start_time < timezone.now()) and ( t.end_time == None or t.end_time > timezone.now()):
+				t.status = "Assigned"
+			else:
+				t.status = "late"
+
 
 	return render(request, 'classroom/view_class.html', {'tests' : tests, 'class_id' : class_id } )
 
