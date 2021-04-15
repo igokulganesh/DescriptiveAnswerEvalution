@@ -20,6 +20,7 @@ urlpatterns = [
 	path('<int:test_id>/review_test', Students.review_test, name='review_test'),
 	path('<int:class_id>/assigned_test', Students.assigned_test, name='assigned_test'),
 	path('<int:class_id>/missing_test', Students.missing_test, name='missing_test'),
+	path('<int:class_id>/done_test', Students.done_test, name='done_test'),
 
 	# For Teachers 
 	path('create_class', Teachers.create_class, name='create_class'),

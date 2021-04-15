@@ -77,6 +77,20 @@
                 <p>
                   {{ t.desc }}
                 </p>
+
+                {% if t.status == "Assigned" %}
+                <p style="color: green;"> Assigned  </p>
+                {% endif %}
+
+                {% if t.status == "late" %}
+                <p style="color: red;"> Time Out</p>
+                {% endif %}
+
+                {% if t.status == "done" %}
+                <p style="color: green;"> Completed </p>
+                {% endif %}
+
+
               </div>
 
               <div class="entry-meta">
@@ -150,7 +164,7 @@
                   <li><a href="{% url 'view_class' class_id %}">All</a></li>
                   <li><a href="{% url 'assigned_test' class_id %}">Assigned</a></li>
                   <li><a href="{% url 'missing_test' class_id %}">Missing</a></li>
-                  <li><a href="#">Done</a></li>
+                  <li><a href="{% url 'done_test' class_id %}">Done</a></li>
                   {% endif %}
                 </ul>
               </div><!-- End sidebar categories-->
