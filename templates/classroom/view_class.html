@@ -16,7 +16,7 @@
         <li><a class="nav-link scrollto active" href="{% url 'dashboard' %}">Home</a></li>
 
         {% if user.is_staff %}
-          <li><a href="{% url 'create_test' class_id %}"><i class="bi bi-folder-plus"><span> Create Test</span></i></a>
+          <li><a href="{% url 'create_test' room.id %}"><i class="bi bi-folder-plus"><span> Create Test</span></i></a>
         {% endif %}
 
         <li class="dropdown"><a href="#"><span>{{ user.first_name }}</span><i class="bi bi-person-circle"></i></a>
@@ -24,7 +24,7 @@
             <li><a href="#">Profile</a></li>
             <li><a href="{% url 'logout' %}">Logout</a></li>
             <li><a href="{% url 'home' %}#about">About us</a></li>
-            <li><a href="{% url 'home' %}#contact">Contact us</a></li>
+            <li><a href="#">Class Code : {{ room.code }}</a></li>
             <!-- <li><a href="#">Settings</a></li> -->
           </ul>
         </li>
@@ -46,8 +46,9 @@
       <div class="container">
 
         <ol>
-          <li><a href="{% url 'dashboard' %}">Home</a></li>
-          <li>Classroom</li>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'dashboard' %}">Classroom</a></li>
+          <li>{{ room }}</li>
         </ol>
       </div>
     </section><!-- End Breadcrumbs -->
@@ -67,7 +68,11 @@
               <h2 class="entry-title">
                 <a href="{% url 'view_test' t.id %}">{{ t }}</a>
               </h2>
-              {% else %}
+              {% elif t.status == "late"  %}
+              <h2 class="entry-title">
+                <a>{{ t }}</a>
+              </h2>
+              {% else  %}
               <h2 class="entry-title">
                 <a href="{% url 'attend_test' t.id %}">{{ t }}</a>
               </h2>
@@ -151,23 +156,21 @@
                   <button type="submit"><i class="bi bi-search"></i></button>
                 </form>
               </div><!-- End sidebar search formn-->
-
-              <h3 class="sidebar-title">Categories</h3>
-              <div class="sidebar-item categories">
-                <ul>
                   
                   {% if user.is_staff %}
-                  <li><a href="{% url 'view_class' class_id %}">All</a></li>
-                  <li><a href="#">To Review</a></li>
-                  <li><a href="#">Reviewed</a></li>
+
                   {% else %}
-                  <li><a href="{% url 'view_class' class_id %}">All</a></li>
-                  <li><a href="{% url 'assigned_test' class_id %}">Assigned</a></li>
-                  <li><a href="{% url 'missing_test' class_id %}">Missing</a></li>
-                  <li><a href="{% url 'done_test' class_id %}">Done</a></li>
+                  <h3 class="sidebar-title">Categories</h3>
+                  <div class="sidebar-item categories">
+                    <ul>
+                      <li><a href="{% url 'view_class' room.id %}">All</a></li>
+                      <li><a href="{% url 'assigned_test' room.id %}">Assigned</a></li>
+                      <li><a href="{% url 'missing_test' room.id %}">Missing</a></li>
+                      <li><a href="{% url 'done_test' room.id %}">Done</a></li>
+                    </ul>
+                  </div><!-- End sidebar categories-->
                   {% endif %}
-                </ul>
-              </div><!-- End sidebar categories-->
+
 
             </div><!-- End sidebar -->
 

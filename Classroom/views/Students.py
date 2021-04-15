@@ -118,8 +118,9 @@ def assigned_test(request, class_id):
 
 	for t in tests:
 		t.status = "Assigned"
-
-	return render(request, 'classroom/view_class.html', {'tests' : tests, 'class_id' : class_id } )
+		
+	room = get_object_or_404(Classroom, id=class_id)
+	return render(request, 'classroom/view_class.html', {'tests' : tests, 'room' : room } )
 
 
 @login_required(login_url='login')
@@ -157,7 +158,8 @@ def missing_test(request, class_id):
 		else:
 			t.status = "late"
 
-	return render(request, 'classroom/view_class.html', {'tests' : tests, 'class_id' : class_id } )
+	room = get_object_or_404(Classroom, id=class_id)
+	return render(request, 'classroom/view_class.html', {'tests' : tests, 'room' : room } )
 
 
 @login_required(login_url='login')
@@ -191,5 +193,6 @@ def done_test(request, class_id):
 
 	for t in tests:
 		t.status = "done"
-
-	return render(request, 'classroom/view_class.html', {'tests' : tests, 'class_id' : class_id } )
+		
+	room = get_object_or_404(Classroom, id=class_id)
+	return render(request, 'classroom/view_class.html', {'tests' : tests, 'room' : room } )

@@ -1,6 +1,6 @@
 from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from ..models import Classroom, Enrollment, Test, Question, Answer, testTaken
@@ -65,8 +65,9 @@ def view_class(request, class_id):
 			else:
 				t.status = "late"
 
+	room = get_object_or_404(Classroom, id=class_id)
 
-	return render(request, 'classroom/view_class.html', {'tests' : tests, 'class_id' : class_id } )
+	return render(request, 'classroom/view_class.html', {'tests' : tests, 'room' : room } )
 
 
 def signup(request):
