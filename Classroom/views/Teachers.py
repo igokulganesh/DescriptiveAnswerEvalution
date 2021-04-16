@@ -27,16 +27,7 @@ def create_class(request):
 			messages.success(request, '{} Class is Created'.format(room))
 			return redirect('dashboard')
 		else:
-			messages.error(request, form.errors) 
-		# try:
-		# 	room = Classroom(owner=user, name=name, code=code, desc=desc)
-		# 	room.save()
-		# 	messages.success(request, '{} Class is Created'.format(room))
-		# except IntegrityError:
-		# 	messages.warning(request, "Code is already taken (Use Unique Code)")
-		# 	return redirect('create_class')
-
-
+			messages.error(request, form.errors)
 	return render(request, 'teachers/create_class.html', {'form': form})
 	
 
