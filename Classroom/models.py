@@ -11,13 +11,6 @@ class Classroom(models.Model):
 	def __str__(self):
 		return self.name
 
-# class Student(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-#     classes = models.ManyToManyField(Classroom, related_name='students', blank=True, through='Enrollment')
-
-#     def __str__(self):
-#         return self.user.first_name
-
 class Enrollment(models.Model):
 	class Meta:
 		unique_together = (('room', 'student'),)

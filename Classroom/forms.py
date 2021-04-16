@@ -4,26 +4,6 @@ from .models import Classroom, Enrollment, Test, Question, Answer
 from django.contrib.auth.models import User
 import datetime
 
-class TeacherSignUpForm(UserCreationForm):
-  class Meta(UserCreationForm.Meta):
-    model = User
-
-  def save(self):
-    user = super().save()
-    user.is_staff = True
-    user.save()
-    return user
-
-class StudentSignUpForm(UserCreationForm):
-  class Meta(UserCreationForm.Meta):
-    model = User
-
-  def save(self):
-    user = super().save()
-    user.is_staff = False
-    user.save()
-    return user
-
 class CreateTestForm(forms.ModelForm):
   class Meta:
     model = Test
@@ -49,3 +29,4 @@ class CreateQnForm(forms.ModelForm):
     'key':forms.Textarea(attrs={ 'rows': 3, 'class':'form-control','placeholder':'Answer Key'}),
     'max_score':forms.NumberInput(attrs={ 'step': 0.50, 'class': 'form-control','placeholder':'Max Score'})
     }
+
