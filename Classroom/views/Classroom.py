@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from ..models import Classroom, Enrollment, Test, Question, Answer, testTaken
+from ..forms import UserForm
 from ..decorators import teacher_required
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -82,6 +83,19 @@ def people(request, class_id):
 	print(student)
 	return render(request, "classroom/people.html", { 'teacher' : teacher, 'student' : student })
 
+
+@login_required(login_url='login')
+def profile(request):
+	form = UserForm(instance=request.user)
+	if request.method == "POST":
+		form = UserForm(request.POST, instance=request.user)
+		if form.is_valid():
+			form.save()
+			messages.success(request, '{} Modified.'.format(request.user))
+			return redirect('dashboard')
+		else:
+			messages.error(request, form.errors)
+	return render(request, 'classroom/profile.html', {'form': form, })
 
 def signup(request):
 	if request.method == "POST":

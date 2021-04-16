@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import Classroom, Enrollment, Test, Question, Answer
 from django.contrib.auth.models import User
 import datetime
@@ -30,3 +30,17 @@ class CreateQnForm(forms.ModelForm):
     'max_score':forms.NumberInput(attrs={ 'step': 0.50, 'class': 'form-control','placeholder':'Max Score'})
     }
 
+class UserForm(UserChangeForm):
+    class Meta:
+        model=User
+        fields=['email','first_name','username']
+        labels={
+            'email': 'Email ID',
+            'username':'Username',
+            'first_name':'Name'
+        }
+        widgets={
+        'email':forms.EmailInput(attrs={'class':'form-control',}),
+        'first_name':forms.TextInput(attrs={'class':'form-control',}),
+        'username':forms.EmailInput(attrs={'class':'form-control'}),
+        }
