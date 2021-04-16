@@ -34,16 +34,16 @@
               <div class="row gy-4">
 
                 <div class="col-md-12">
-                  <input type="text" name="name" class="form-control" placeholder="Classroom Name" required>
+                  {{ form.name }}
                 </div>
 
                 <div class="col-md-12">
-                  <input id="code" type="text" name="code" class="form-control" placeholder="Unique Code" required>
+                  {{ form.code }}
                   <small id="emailHelp" class="form-text text-muted">This code is used by students to join your Class</small>
                 </div>
 
                 <div class="col-md-12">
-                  <textarea class="form-control" name="desc" rows="6" placeholder="Description"></textarea>
+                  {{ form.desc }}
                 </div>
 
                 <div class="col-md-12 text-center">

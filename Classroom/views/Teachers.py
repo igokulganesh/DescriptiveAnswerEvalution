@@ -6,30 +6,38 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from ..decorators import teacher_required
 from ..models import Classroom, Enrollment, Test, Question, Answer
-from ..forms import CreateTestForm, CreateQnForm
+from ..forms import CreateTestForm, CreateQnForm, CreateClassForm
 from datetime import datetime
 
 
 @login_required(login_url='login')
 @teacher_required
 def create_class(request):
+	form = CreateClassForm(request.POST or None, request.FILES or None)
 	if request.method == "POST":
-		name 	 = request.POST['name']
-		desc 	 = request.POST.get('desc', '') 
-		user 	 = request.user  
-		code	 = request.POST['code']
+		form = CreateClassForm(request.POST)
 
-		try:
+		if form.is_valid():
+			name = form.cleaned_data.get('name')
+			desc = form.cleaned_data.get('desc')
+			code = form.cleaned_data.get('code')
+			user = request.user 
 			room = Classroom(owner=user, name=name, code=code, desc=desc)
 			room.save()
 			messages.success(request, '{} Class is Created'.format(room))
-		except IntegrityError:
-			messages.warning(request, "Code is already taken (Use Unique Code)")
-			return redirect('create_class')
+			return redirect('dashboard')
+		else:
+			messages.error(request, form.errors) 
+		# try:
+		# 	room = Classroom(owner=user, name=name, code=code, desc=desc)
+		# 	room.save()
+		# 	messages.success(request, '{} Class is Created'.format(room))
+		# except IntegrityError:
+		# 	messages.warning(request, "Code is already taken (Use Unique Code)")
+		# 	return redirect('create_class')
 
-		return redirect('dashboard')
 
-	return render(request, 'teachers/create_class.html')
+	return render(request, 'teachers/create_class.html', {'form': form})
 	
 
 @login_required(login_url='login')

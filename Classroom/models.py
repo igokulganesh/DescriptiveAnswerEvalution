@@ -23,8 +23,8 @@ class Test(models.Model):
 	name = models.CharField(max_length=255)
 	desc = models.CharField(max_length=2555, blank=True)
 	create_time = models.DateTimeField(auto_now_add=True)
-	start_time = models.DateTimeField(blank=True, null=True)
-	end_time = models.DateTimeField(blank=True, null=True)
+	start_time = models.DateTimeField()
+	end_time = models.DateTimeField()
 	# test_mark = models.PositiveSmallIntegerField(default=0)
 
 	def __str__(self):

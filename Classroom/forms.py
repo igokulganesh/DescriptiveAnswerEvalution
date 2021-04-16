@@ -4,6 +4,16 @@ from .models import Classroom, Enrollment, Test, Question, Answer
 from django.contrib.auth.models import User
 import datetime
 
+class CreateClassForm(forms.ModelForm):
+    class Meta:
+        model = Classroom
+        fields= ('name', 'code', 'desc')
+        widgets={
+        'name':forms.TextInput(attrs={'class':'form-control','placeholder':'Classroom Name'}),
+        'desc':forms.Textarea(attrs={ 'rows': 5, 'class':'form-control','placeholder':'Description'}),
+        'code':forms.TextInput(attrs={'class':'form-control','placeholder':'Unique Code'})
+        }
+
 class CreateTestForm(forms.ModelForm):
   class Meta:
     model = Test
