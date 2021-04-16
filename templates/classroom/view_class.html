@@ -21,7 +21,7 @@
 
         <li class="dropdown"><a href="#"><span>{{ user.first_name }}</span><i class="bi bi-person-circle"></i></a>
           <ul>
-            <li><a href="#">Profile</a></li>
+            <li><a href="{% url 'profile' %}">Profile</a></li>
             <li><a href="{% url 'logout' %}">Logout</a></li>
             <li><a href="{% url 'home' %}#about">About us</a></li>
             <li><a>Class Code : {{ room.code }}</a></li>

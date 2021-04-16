@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from .models import Classroom, Enrollment, Test, Question, Answer
 from django.contrib.auth.models import User
 import datetime
@@ -44,3 +44,9 @@ class UserForm(UserChangeForm):
         'first_name':forms.TextInput(attrs={'class':'form-control',}),
         'username':forms.EmailInput(attrs={'class':'form-control'}),
         }
+
+# class PasswordForm(PasswordChangeForm):
+#     fields=['old_password', 'new_password', 'new_password_confirmation']
+#     old_password = forms.CharField(required=True, label='Current Password', widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'Enter Current Password'}))
+#     new_password = forms.CharField(required=True, label='New Password', widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'Enter New Password'}))
+#     new_password_confirmation = forms.CharField(required=True, label='Confirm New Password', widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'Enter New Password, again'}))

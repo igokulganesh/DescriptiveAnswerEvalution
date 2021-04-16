@@ -1,10 +1,11 @@
-from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate
+from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate, update_session_auth_hash
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from ..models import Classroom, Enrollment, Test, Question, Answer, testTaken
 from ..forms import UserForm
+from django.contrib.auth.forms import PasswordChangeForm
 from ..decorators import teacher_required
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -96,6 +97,21 @@ def profile(request):
 		else:
 			messages.error(request, form.errors)
 	return render(request, 'classroom/profile.html', {'form': form, })
+
+@login_required(login_url='login')
+def password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password has Successfully updated!')
+            return redirect('dashboard')
+        else:
+            messages.error(request, form.errors) 
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'classroom/password.html', {'form': form})
 
 def signup(request):
 	if request.method == "POST":
