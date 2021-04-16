@@ -21,15 +21,20 @@
       <div class="container" data-aos="fade-up">
 
         <header class="section-header">
+          {% if room %}
+            <h2>{{room}}</h2>
+            <p>Update Classroom</p>
+          {% else %}
           <h2>Create</h2>
           <p>Create Classroom</p>
+          {% endif %}
         </header>
 
         <div class="row gy-4">
 
         	<!-- Form -->
           <div class="col-lg-6">
-            <form action="{% url 'create_class' %}" method="post" class="php-email-form">
+            <form  method="post" class="php-email-form">
             	{% csrf_token %}
               <div class="row gy-4">
 
@@ -47,7 +52,7 @@
                 </div>
 
                 <div class="col-md-12 text-center">
-                  <button type="submit">Create Class</button>
+                  <button type="submit">Submit</button>
                 </div>
 
               </div>

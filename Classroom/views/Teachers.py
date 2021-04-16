@@ -29,6 +29,23 @@ def create_class(request):
 		else:
 			messages.error(request, form.errors)
 	return render(request, 'teachers/create_class.html', {'form': form})
+
+@login_required(login_url='login')
+@teacher_required
+def update_class(request, class_id):
+	room = get_object_or_404(Classroom, pk=class_id)
+	if request.method == "POST":
+		form = CreateClassForm(request.POST, instance=room)
+
+		if form.is_valid():
+			form.save()
+			messages.success(request, '{} Class is Updated'.format(room))
+			return redirect('view_class', class_id)
+		else:
+			messages.error(request, form.errors)
+	else:
+		form = CreateClassForm(instance=room)
+	return render(request, 'teachers/create_class.html', {'form': form, 'room':room})
 	
 
 @login_required(login_url='login')
