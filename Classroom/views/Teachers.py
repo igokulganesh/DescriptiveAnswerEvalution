@@ -46,6 +46,14 @@ def update_class(request, class_id):
 	else:
 		form = CreateClassForm(instance=room)
 	return render(request, 'teachers/create_class.html', {'form': form, 'room':room})
+
+@login_required(login_url='login')
+@teacher_required
+def delete_class(request, class_id):
+	room = get_object_or_404(Classroom, pk=class_id)
+	messages.success(request, '{} is deleted'.format(room))
+	room.delete()
+	return redirect('dashboard')
 	
 
 @login_required(login_url='login')
