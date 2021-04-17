@@ -162,22 +162,17 @@ def create_qn(request, test_id):
 @login_required(login_url='login')
 @teacher_required
 def update_qn(request, qn_id):
-	form = CreateQnForm(request.POST or None, request.FILES or None)
+	qn = get_object_or_404(Question, pk=qn_id)
+
 	if request.method == "POST":
-		form = CreateQnForm(request.POST)
+		form = CreateQnForm(request.POST, instance=qn)
 
 		if form.is_valid():
-			text = form.cleaned_data.get('qn_text')
-			key = form.cleaned_data.get('key')
-			max_score = form.cleaned_data.get('max_score')
-			
-			test = get_object_or_404(Test, id=test_id)
-
-			qn = Question(test=test, qn_text=text, key=key, max_score=max_score)
-			qn.save()
-
-			return redirect('view_test', test_id)
+			form.save()
+			messages.success(request, 'Question is Updated')
+			return redirect('view_test', qn.test.id)
 		else: 
 			messages.error(request, form.errors)
-
-	return render(request, 'teachers/create_qn.html', {'form': form, 'test_id' : test_id })
+	else:
+		form = CreateQnForm(instance=qn)
+	return render(request, 'teachers/create_qn.html', {'form': form, 'qn' : qn })

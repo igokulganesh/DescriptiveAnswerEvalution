@@ -11,11 +11,10 @@
 
       {% if qn %}
         <h1 class="display-4"> Update Question </h1>
-        <p class="lead"> {{qn}} </p>
       {% else %}
         <h1 class="display-4">Create Question</h1>
       {% endif %}
-
+      <br>  
       <form method="POST">
         {% csrf_token %} 
         {% for field in form%}
