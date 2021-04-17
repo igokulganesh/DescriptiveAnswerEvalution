@@ -114,6 +114,13 @@ def delete_test(request, test_id):
 def view_test(request, test_id):
 	qns = Question.objects.filter(test=test_id)
 	test = get_object_or_404(Test, pk=test_id)
+
+	# Search
+	search = request.GET.get('search')
+
+	if search != "" and search is not None:
+		qns = Question.objects.filter(test=test_id, qn_text__icontains=search)
+
 	return render(request, 'teachers/view_test.html', { 'qns' : qns, 'test' : test } )
 
 
