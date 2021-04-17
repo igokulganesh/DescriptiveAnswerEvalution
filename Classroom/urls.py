@@ -35,5 +35,6 @@ urlpatterns = [
 	path('<int:test_id>/view_test', Teachers.view_test, name='view_test'),
 	path('<int:test_id>/create_qn', Teachers.create_qn, name='create_qn'),
 	path('<int:qn_id>/update_qn', Teachers.update_qn, name='update_qn'),
+	path('<int:qn_id>/delete_qn', Teachers.delete_qn, name='delete_qn'),
 
 ]

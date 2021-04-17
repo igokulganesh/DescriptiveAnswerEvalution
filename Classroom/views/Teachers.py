@@ -176,3 +176,12 @@ def update_qn(request, qn_id):
 	else:
 		form = CreateQnForm(instance=qn)
 	return render(request, 'teachers/create_qn.html', {'form': form, 'qn' : qn })
+
+@login_required(login_url='login')
+@teacher_required
+def delete_qn(request, qn_id):
+	qn = get_object_or_404(Question, pk=qn_id)
+	test = qn.test
+	messages.success(request, 'Question is deleted')
+	qn.delete()
+	return redirect('view_test', test.id)
