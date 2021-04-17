@@ -8,6 +8,7 @@ from ..decorators import teacher_required
 from ..models import Classroom, Enrollment, Test, Question, Answer
 from ..forms import CreateTestForm, CreateQnForm, CreateClassForm
 from datetime import datetime
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 @login_required(login_url='login')
@@ -120,6 +121,17 @@ def view_test(request, test_id):
 
 	if search != "" and search is not None:
 		qns = Question.objects.filter(test=test_id, qn_text__icontains=search)
+
+	# paginator 
+	paginator = Paginator(qns, 5)
+	page = request.GET.get('page', 1)
+
+	try:
+		qns = paginator.page(page)
+	except PageNotAnInteger:
+		qns = paginator.page(1)
+	except EmptyPage:
+		qns = paginator.page(paginator.num_pages)
 
 	return render(request, 'teachers/view_test.html', { 'qns' : qns, 'test' : test } )
 
