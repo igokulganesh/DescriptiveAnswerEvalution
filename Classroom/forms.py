@@ -20,11 +20,13 @@ class CreateTestForm(forms.ModelForm):
     fields=( 'name', 'desc', 'start_time', 'end_time' )
     widgets={
     'name':forms.TextInput(attrs={'class':'form-control','placeholder':'Test Name'}),
-    'desc':forms.Textarea(attrs={ 'rows': 5, 'class':'form-control','placeholder':'Description'}),
+    'desc':forms.Textarea(attrs={ 'rows': 5, 'class':'form-control','placeholder':'Description or Instructions'}),
     'start_time': forms.DateTimeInput(attrs={'type':'datetime-local','placeholder':'Assign Test At','class': 'form-control'},format='%Y-%m-%dT%H:%M'),
     'end_time': forms.DateTimeInput(attrs={'type':'datetime-local','placeholder':'Due Time', 'class': 'form-control'},format='%Y-%m-%dT%H:%M'),
     }
     labels={
+        'name': 'Test Name',
+        'desc': 'Description',
         'start_time': 'Start Time',
         'end_time': 'End Time',
     }

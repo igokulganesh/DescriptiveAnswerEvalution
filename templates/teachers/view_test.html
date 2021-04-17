@@ -16,8 +16,8 @@
         <li><a class="nav-link scrollto active" href="{% url 'dashboard' %}">Home</a></li>
 
         {% if user.is_staff %}
-          <li><a href="{% url 'create_qn' test_id %}"><i class="bi bi-folder-plus"><span> Create Question</span></i></a>
-          <li><a href="{% url 'create_qn' test_id %}"><i class="bi bi-gear"><span> Modify Test</span></i></a>
+          <li><a href="{% url 'create_qn' test.id %}"><i class="bi bi-folder-plus"><span> Create Question</span></i></a>
+          <li><a href="{% url 'update_test' test.id %}"><i class="bi bi-gear"><span> Modify Test</span></i></a>
         {% endif %}
 
         <li class="dropdown"><a href="#"><span>{{ user.first_name }}</span><i class="bi bi-person-circle"></i></a>
@@ -47,9 +47,10 @@
       <div class="container">
 
         <ol>
-          <li><a href="{% url 'dashboard' %}">Home</a></li>
-          <li>Classroom</li>
-          <li>Test</li>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'dashboard' %}">Classroom</a></li>
+          <li><a href="{% url 'view_class' test.belongs.id %}">{{ test.belongs }}</a></li>
+          <li>{{test}}</li>
         </ol>
       </div>
     </section><!-- End Breadcrumbs -->
@@ -104,7 +105,7 @@
               </div><!-- End sidebar search formn-->
 
 
-              <a href="{% url 'create_qn' test_id %}"><h3 class="sidebar-title bi bi-folder-plus"> Add Question</h3><i class=""></i></a>
+              <a href="{% url 'create_qn' test.id %}"><h3 class="sidebar-title bi bi-folder-plus"> Add Question</h3><i class=""></i></a>
 
             </div><!-- End sidebar -->
 

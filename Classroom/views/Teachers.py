@@ -78,13 +78,34 @@ def create_test(request, class_id):
 		else: 
 			messages.error(request, form.errors)
 
-	return render(request, 'teachers/create_test.html', {'form': form, 'class_id' : class_id })
+	return render(request, 'teachers/create_test.html', {'form': form })
+
+@login_required(login_url='login')
+@teacher_required
+def update_test(request, test_id):
+	test = get_object_or_404(Test, pk=test_id)
+
+	if request.method == "POST":
+		form = CreateTestForm(request.POST, instance=test)
+
+		if form.is_valid():
+			form.save()
+			messages.success(request, '{}  is Updated'.format(test))
+			return redirect('view_test', test.id)
+		else: 
+			messages.error(request, form.errors)
+	else:
+		form = CreateTestForm(instance=test)
+	return render(request, 'teachers/create_test.html', {'form': form, 'test' : test })
+
+
 
 @login_required(login_url='login')
 @teacher_required
 def view_test(request, test_id):
 	qns = Question.objects.filter(test=test_id)
-	return render(request, 'teachers/view_test.html', { 'qns' : qns, 'test_id' : test_id } )
+	test = get_object_or_404(Test, pk=test_id)
+	return render(request, 'teachers/view_test.html', { 'qns' : qns, 'test' : test } )
 
 
 @login_required(login_url='login')
