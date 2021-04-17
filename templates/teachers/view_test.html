@@ -23,9 +23,10 @@
         <li class="dropdown"><a href="#"><span>{{ user.first_name }}</span><i class="bi bi-person-circle"></i></a>
           <ul>
             <li><a href="#">Profile</a></li>
-            <li><a href="{% url 'logout' %}">Logout</a></li>
-            <li><a href="{% url 'home' %}#about">About us</a></li>
-            <li><a href="{% url 'home' %}#contact">Contact us</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>            
+            {% if user.is_staff %}
+            <li><a class="confirm-delete" href="{% url 'delete_test' test.id  %}" style="color: red">Delete {{ test }}<i class="bi bi-trash"></i></a></li>
+            {% endif %}
             <!-- <li><a href="#">Settings</a></li> -->
           </ul>
         </li>

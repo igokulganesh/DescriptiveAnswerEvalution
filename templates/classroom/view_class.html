@@ -26,7 +26,9 @@
             <li><a href="{% url 'logout' %}">Logout</a></li>
             <li><a>Class Code : {{ room.code }}</a></li>
             <li><a href="{% url 'people' room.id  %}">People</a></li>
-            <li><a class="confirm-delete" href="{% url 'delete_class' room.id  %}" style="color: red">Delete</a></li>
+            {% if user.is_staff %}
+            <li><a class="confirm-delete" href="{% url 'delete_class' room.id  %}" style="color: red">Delete {{ room }}<i class="bi bi-trash"></i></a></li>
+            {% endif %}
             <!-- <li><a href="#">Settings</a></li> -->
           </ul>
         </li>

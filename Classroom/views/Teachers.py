@@ -98,6 +98,15 @@ def update_test(request, test_id):
 		form = CreateTestForm(instance=test)
 	return render(request, 'teachers/create_test.html', {'form': form, 'test' : test })
 
+@login_required(login_url='login')
+@teacher_required
+def delete_test(request, test_id):
+	test = get_object_or_404(Test, pk=test_id)
+	room = test.belongs
+	messages.success(request, '{} is deleted'.format(test))
+	test.delete()
+	return redirect('view_class', room.id)
+
 
 
 @login_required(login_url='login')
