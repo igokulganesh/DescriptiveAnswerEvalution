@@ -46,7 +46,6 @@
     <!-- ======= Breadcrumbs ======= -->
     <section class="breadcrumbs">
       <div class="container">
-
         <ol>
           <li><a href="{% url 'home' %}">Home</a></li>
           <li><a href="{% url 'dashboard' %}">Classroom</a></li>
@@ -124,7 +123,9 @@
               </div><!-- End sidebar search formn-->
 
 
-              <a href="{% url 'create_qn' test.id %}"><h3 class="sidebar-title bi bi-folder-plus"> Add Question</h3><i class=""></i></a>
+              <a href="{% url 'create_qn' test.id %}"><h3 class="sidebar-title bi bi-file-earmark-plus"> Add Question</h3><i class=""></i></a>
+
+              <a href="{% url 'create_qn' test.id %}"><h3 class="sidebar-title bi bi-people-fill"> Students Work </h3><i class=""></i></a>
 
             </div><!-- End sidebar -->
 
