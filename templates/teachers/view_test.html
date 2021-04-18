@@ -52,6 +52,7 @@
           <li><a href="{% url 'view_class' test.belongs.id %}">{{ test.belongs }}</a></li>
           <li>{{test}}</li>
         </ol>
+        <h2>Questions</h2>
       </div>
     </section><!-- End Breadcrumbs -->
 
@@ -62,12 +63,11 @@
         <div class="row">
 
           <div class="col-lg-8 entries">
-
             {% for q in qns %}
             <article class="entry">
 
               <h2 class="entry-title">
-                <a href="">{{ q }}</a>
+                <a>{{ q }}</a>
               </h2>
 
               <div class="entry-meta">
@@ -125,7 +125,7 @@
 
               <a href="{% url 'create_qn' test.id %}"><h3 class="sidebar-title bi bi-file-earmark-plus"> Add Question</h3><i class=""></i></a>
 
-              <a href="{% url 'create_qn' test.id %}"><h3 class="sidebar-title bi bi-people-fill"> Students Work </h3><i class=""></i></a>
+              <a href="{% url 'students_work' test.id %}"><h3 class="sidebar-title bi bi-people-fill"> Students Work </h3><i class=""></i></a>
 
             </div><!-- End sidebar -->
 

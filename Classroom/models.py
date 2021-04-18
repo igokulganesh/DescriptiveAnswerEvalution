@@ -36,7 +36,7 @@ class testTaken(models.Model):
 	
 	test =  models.ForeignKey(Test, on_delete=models.CASCADE)
 	student = models.ForeignKey(User, on_delete=models.CASCADE) 
-	submittedAt = models.DateTimeField(blank=True, null=True)
+	submittedAt = models.DateTimeField(auto_now_add=True)
 
 class Question(models.Model):
 	test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name='questions')

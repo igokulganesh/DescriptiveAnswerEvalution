@@ -5,10 +5,11 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from ..decorators import teacher_required
-from ..models import Classroom, Enrollment, Test, Question, Answer
+from ..models import Classroom, Enrollment, Test, Question, Answer, testTaken
 from ..forms import CreateTestForm, CreateQnForm, CreateClassForm
 from datetime import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 
 
 @login_required(login_url='login')
@@ -134,6 +135,30 @@ def view_test(request, test_id):
 		qns = paginator.page(paginator.num_pages)
 
 	return render(request, 'teachers/view_test.html', { 'qns' : qns, 'test' : test } )
+
+
+@login_required(login_url='login')
+@teacher_required
+def students_work(request, test_id):
+	qns = Question.objects.filter(test=test_id)
+	test = get_object_or_404(Test, pk=test_id)
+	student = Enrollment.objects.filter(room=test.belongs).values('student')
+	attended_s = list(testTaken.objects.filter(test=test_id).values())
+	missed_s = testTaken.objects.filter(~Q(student__id__in=student.all()), test=test_id).values()
+
+
+	print(student)
+	print(attended_s)
+
+	values = {
+		'qns' : qns, 
+		'test': test,
+		'student': student, 
+		'attended_s':attended_s,
+		'missed_s': missed_s,
+	}
+
+	return render(request, 'teachers/students_work.html', values )
 
 
 @login_required(login_url='login')
