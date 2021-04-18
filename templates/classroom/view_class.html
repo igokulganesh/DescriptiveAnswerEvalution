@@ -72,7 +72,7 @@
               <h2 class="entry-title">
                 <a href="{% url 'view_test' t.id %}">{{ t }}</a>
               </h2>
-              {% elif t.status == "late"  %}
+              {% elif t.status == "late" or t.status == "not" %}
               <h2 class="entry-title">
                 <a>{{ t }}</a>
               </h2>
@@ -93,6 +93,10 @@
 
                 {% if t.status == "late" %}
                 <p style="color: red;"> Time Out</p>
+                {% endif %}
+
+                {% if t.status == "not" %}
+                <p style="color: #dbed3b;"> Not yet started </p>
                 {% endif %}
 
                 {% if t.status == "done" %}

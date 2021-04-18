@@ -58,12 +58,16 @@ def view_class(request, class_id):
 		tests = paginator.page(paginator.num_pages)
 
 
-	if request.user.is_staff == False :
+	if request.user.is_staff :
+		pass 
+	else:
 		for t in tests:
 			if testTaken.objects.filter(student=request.user, test=t).exists():
 				t.status = "done"
 			elif ( t.start_time == None or t.start_time < timezone.now()) and ( t.end_time == None or t.end_time > timezone.now()):
 				t.status = "Assigned"
+			elif(t.start_time and t.start_time > timezone.now()): # test is not yet started
+				t.status = "not"
 			else:
 				t.status = "late"
 
