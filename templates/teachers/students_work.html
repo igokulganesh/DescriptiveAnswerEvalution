@@ -10,38 +10,59 @@
           <div class="sidebar-sticky">
 
             <h2 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-              <span>Attended</span>
+              <span>Attended Students</span>
               <a class="d-flex align-items-center text-muted" href="#">
                 <span data-feather="plus-circle"></span>
               </a>
             </h2>
-            <ul class="nav flex-column mb-2">
-            	{% for s in attended_s %}
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file-text"></span>
-                   {{ s.first_name }}
-                </a>
-              </li>
+
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>ML Score</th>
+                  <th>Actual Score</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for s in attended_s %}
+                <tr>
+                  <td>{{ s.first_name }}</td>
+                  <td>{{ s.ml_score }}</td>
+                  <td>{{ s.actual_score }}</td>
+                </tr>
               {% endfor %}
-            </ul>
+              </tbody>
+            </table>
+          </div>
+
+
 
 						<h2 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-              <span>Not Attended</span>
+              <span>Not Attended Students</span>
               <a class="d-flex align-items-center text-muted" href="#">
                 <span data-feather="plus-circle"></span>
               </a>
             </h2>
-            <ul class="nav flex-column mb-2">
-            	{% for s in missed_s %}
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file-text"></span>
-                   {{ s.first_name }}
-                </a>
-              </li>
+
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for s in missed_s %}
+                <tr>
+                  <td>{{ s.first_name }}</td>
+                </tr>
               {% endfor %}
-            </ul>
+              </tbody>
+            </table>
+          </div>
+
 
 
           </div>

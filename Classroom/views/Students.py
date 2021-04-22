@@ -57,12 +57,18 @@ def submit_test(request, test_id):
 	if testTaken.objects.filter(test=test, student=request.user).exists():
 		return redirect('review_test', test_id)
 
-	testTaken(test=test, student=student).save() 
+	tt = testTaken(test=test, student=student, actual_score=0, ml_score=0)
+	tt.save()
 
 	for q in qns:
 		id = str(q.id)
 		ans = request.POST[id] 
-		Answer(student=student, question=q, answer_text=ans).save()
+		ans = Answer(student=student, question=q, answer_text=ans)
+		ans.save()
+		tt.actual_score += ans.actual_score
+		tt.ml_score += ans.ml_score
+
+	tt.save()
 
 	return redirect('view_class', test.belongs.id)
 

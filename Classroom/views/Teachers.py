@@ -156,6 +156,10 @@ def students_work(request, test_id):
 	missed_s = User.objects.filter(pk__in=d).values()
 	student = User.objects.filter(pk__in=student).values()
 
+	for a in attended_s:
+		a['ml_score'] = get_object_or_404(testTaken, test=test_id, student=a['id']).ml_score
+		a['actual_score'] = get_object_or_404(testTaken, test=test_id, student=a['id']).actual_score
+
 	values = {
 		'qns' : qns, 
 		'test': test,

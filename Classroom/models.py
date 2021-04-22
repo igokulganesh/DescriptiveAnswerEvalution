@@ -40,6 +40,8 @@ class testTaken(models.Model):
 	test =  models.ForeignKey(Test, on_delete=models.CASCADE)
 	student = models.ForeignKey(User, on_delete=models.CASCADE) 
 	submittedAt = models.DateTimeField(auto_now_add=True)
+	ml_score = models.PositiveSmallIntegerField(default=0)
+	actual_score = models.PositiveSmallIntegerField(default=0)
 
 	def __str__(self):
 		return self.student.first_name + ' Attended ' + self.test.name
@@ -57,8 +59,8 @@ class Answer(models.Model):
 	student = models.ForeignKey(User, on_delete=models.CASCADE)
 	question = models.ForeignKey(Question, on_delete=models.CASCADE)
 	answer_text = models.CharField(max_length=10000)
-	ml_score = models.PositiveSmallIntegerField(default=0)
-	actual_score = models.PositiveSmallIntegerField(default=0)
+	ml_score = models.PositiveSmallIntegerField(default=10)
+	actual_score = models.PositiveSmallIntegerField(default=10)
 
 	def __str__(self):
 		return self.answer_text
