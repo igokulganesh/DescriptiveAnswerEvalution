@@ -29,6 +29,7 @@
               <th>Name</th>
               <th>ML Score</th>
               <th>Actual Score</th>
+              <th>Maximum Score</th>
               <th></th>
             </tr>
           </thead>
@@ -38,6 +39,7 @@
               <td>{{ s.first_name }}</td>
               <td>{{ s.ml_score }}</td>
               <td>{{ s.actual_score }}</td>
+              <td>{{ s.actual_score }}</td>
               <td><a href="{% url 'individual_work' test_id=test.id student_id=s.id %}" style="text-decoration: none;"><i class="bi bi-check2-square"> Verify</i></a></td>
             </tr>
           {% endfor %}
@@ -46,7 +48,7 @@
       </div>
 
 
-
+        <br><br>
 				<h2 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
           <span>Not Attended Students</span>
           <a class="d-flex align-items-center text-muted" href="#">
@@ -86,10 +88,11 @@
 
               <button class="btn text-left" data-toggle="collapse" data-target="#{{q.ans.id}}" aria-expanded="true" aria-controls="{{q.ans.id}}">{{q.qns}}</button>
               <br><br>
-              <p style="float: right;">
-              <input class="col-sm-3" type="number" value="{{q.ans.actual_score}}">/{{ q.qns.max_score }}
-              <input class="btn btn-primary btn-sm" type="submit" value="Submit" style="float: right;">
-              </p>
+              <form style="float: right;" method="post" action="{% url 'update_work' q.qns.id student.id %}">
+                {% csrf_token %}
+                <input class="col" type="number" min="0" max="{{ q.qns.max_score }}" name="actual_score" value="{{q.ans.actual_score}}">/{{ q.qns.max_score }} &nbsp;&nbsp;
+                <input class="btn btn-primary btn-sm" type="submit" value="Submit">
+              </form>
             </div>
 
             <div id="{{q.ans.id}}" class="collapse" aria-labelledby="{{q.qns.id}}" data-parent="#accordion">

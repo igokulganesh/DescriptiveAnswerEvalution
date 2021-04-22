@@ -169,8 +169,7 @@ def students_work(request, test_id):
 
 @login_required(login_url='login')
 @teacher_required
-def individual_work(request, test_id, student_id):
-	
+def individual_work(request, test_id, student_id):	
 	test = get_object_or_404(Test, pk=test_id)
 	student = Enrollment.objects.filter(room=test.belongs).values('student')
 	attended_s = testTaken.objects.filter(test=test_id).values('student')
@@ -206,6 +205,25 @@ def individual_work(request, test_id, student_id):
 	}
 
 	return render(request, 'teachers/students_work.html', values )
+
+
+@login_required(login_url='login')
+@teacher_required
+def update_work(request, qn_id, student_id):
+	if request.method == "POST":
+		ac = int(request.POST['actual_score'])
+		student = get_object_or_404(User, pk=student_id) 
+		qn = get_object_or_404(Question, pk=qn_id)
+		ans = get_object_or_404(Answer, student=student, question=qn)
+		tt = get_object_or_404(testTaken, student=student, test=qn.test)
+		tt.actual_score -= ans.actual_score 
+		tt.actual_score += ac 
+		ans.actual_score = ac 
+		ans.save()
+		tt.save() 
+
+		print(ans)
+	return redirect('individual_work', qn.test.id, student.id)
 
 
 @login_required(login_url='login')
