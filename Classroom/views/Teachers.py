@@ -141,7 +141,6 @@ def view_test(request, test_id):
 @login_required(login_url='login')
 @teacher_required
 def students_work(request, test_id):
-	qns = Question.objects.filter(test=test_id)
 	test = get_object_or_404(Test, pk=test_id)
 	student = Enrollment.objects.filter(room=test.belongs).values('student')
 	attended_s = testTaken.objects.filter(test=test_id).values('student')
@@ -154,14 +153,52 @@ def students_work(request, test_id):
 	
 	attended_s = User.objects.filter(pk__in=attended_s).values()
 	missed_s = User.objects.filter(pk__in=d).values()
-	student = User.objects.filter(pk__in=student).values()
 
 	for a in attended_s:
 		a['ml_score'] = get_object_or_404(testTaken, test=test_id, student=a['id']).ml_score
 		a['actual_score'] = get_object_or_404(testTaken, test=test_id, student=a['id']).actual_score
 
 	values = {
-		'qns' : qns, 
+		'test': test,
+		'attended_s':attended_s,
+		'missed_s': missed_s,
+	}
+
+	return render(request, 'teachers/students_work.html', values )
+
+
+@login_required(login_url='login')
+@teacher_required
+def individual_work(request, test_id, student_id):
+	
+	test = get_object_or_404(Test, pk=test_id)
+	student = Enrollment.objects.filter(room=test.belongs).values('student')
+	attended_s = testTaken.objects.filter(test=test_id).values('student')
+	missed_s = [item for item in student if item not in attended_s]
+
+	d = [] 
+	for s in missed_s:
+		d.append(s['student'])
+
+	
+	attended_s = User.objects.filter(pk__in=attended_s).values()
+	missed_s = User.objects.filter(pk__in=d).values()
+	
+	for a in attended_s:
+		a['ml_score'] = get_object_or_404(testTaken, test=test_id, student=a['id']).ml_score
+		a['actual_score'] = get_object_or_404(testTaken, test=test_id, student=a['id']).actual_score
+
+	qns = Question.objects.filter(test=test_id)
+	student = get_object_or_404(User, pk=student_id) 
+	ans = []
+	for q in qns :
+		d = {} 
+		d['qns'] = q 
+		d['ans'] = get_object_or_404(Answer, student=student, question=q)
+		ans.append(d)
+
+	values = {
+		'ans' : ans, 
 		'test': test,
 		'student': student, 
 		'attended_s':attended_s,
