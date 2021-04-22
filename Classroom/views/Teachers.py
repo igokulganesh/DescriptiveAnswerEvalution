@@ -10,6 +10,7 @@ from ..forms import CreateTestForm, CreateQnForm, CreateClassForm
 from datetime import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
+from django.contrib.auth.models import User
 
 
 @login_required(login_url='login')
@@ -143,8 +144,12 @@ def students_work(request, test_id):
 	qns = Question.objects.filter(test=test_id)
 	test = get_object_or_404(Test, pk=test_id)
 	student = Enrollment.objects.filter(room=test.belongs).values('student')
-	attended_s = list(testTaken.objects.filter(test=test_id).values())
-	missed_s = testTaken.objects.filter(~Q(student__id__in=student.all()), test=test_id).values()
+	attended_s = testTaken.objects.filter(test=test_id).values('student')
+	missed_s = testTaken.objects.filter(~Q(student__id__in=student.all()), test=test_id).values('student')
+
+
+	attended_s = User.objects.filter(pk__in=attended_s).values()
+	missed_s = User.objects.filter(pk__in=missed_s).values()
 
 
 	print(student)

@@ -130,13 +130,17 @@ def signup(request):
 		else: 
 			is_staff = False
 
-		user = User.objects.create_user(first_name=name, email=email, username=email, password=password, is_staff=is_staff)
-		user.save()
+		try:
+			user = User.objects.create_user(first_name=name, email=email, username=email, password=password, is_staff=is_staff)
+			user.save()
 
-		# user = authenticate(username=email, password=password)
-		# auth_login(request, user)
+			# user = authenticate(username=email, password=password)
+			# auth_login(request, user)
 
-		return redirect('login')
+			return redirect('login')
+
+		except Exception as e:
+			messages.error(request,'Email Aldready Exists')
 
 	return render(request, 'classroom/login.html')
 
