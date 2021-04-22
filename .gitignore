@@ -2,9 +2,5 @@
 **/*.pyc
 .git/
 env/
-home/__pycache__/
-IMS/__pycache__/
-inventory/__pycache__/
-tenants/__pycache__/
-tenants/migrations/
 *.pyc
+db.sqlite3

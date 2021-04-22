@@ -1,2 +1,3 @@
 # Auto detect text files and perform LF normalization
+static/assets/style.css linguist-detectable=false
 * text=auto
