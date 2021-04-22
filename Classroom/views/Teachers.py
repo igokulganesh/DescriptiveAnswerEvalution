@@ -150,13 +150,19 @@ def students_work(request, test_id):
 	for s in missed_s:
 		d.append(s['student'])
 
-	
 	attended_s = User.objects.filter(pk__in=attended_s).values()
 	missed_s = User.objects.filter(pk__in=d).values()
 
 	for a in attended_s:
 		a['ml_score'] = get_object_or_404(testTaken, test=test_id, student=a['id']).ml_score
 		a['actual_score'] = get_object_or_404(testTaken, test=test_id, student=a['id']).actual_score
+
+
+	qns = Question.objects.filter(test=test_id)
+	test.max_score = 0 
+	
+	for q in qns:
+		test.max_score += q.max_score
 
 	values = {
 		'test': test,
@@ -187,6 +193,7 @@ def individual_work(request, test_id, student_id):
 		a['ml_score'] = get_object_or_404(testTaken, test=test_id, student=a['id']).ml_score
 		a['actual_score'] = get_object_or_404(testTaken, test=test_id, student=a['id']).actual_score
 
+	test.max_score = 0 
 	qns = Question.objects.filter(test=test_id)
 	student = get_object_or_404(User, pk=student_id) 
 	ans = []
@@ -195,6 +202,8 @@ def individual_work(request, test_id, student_id):
 		d['qns'] = q 
 		d['ans'] = get_object_or_404(Answer, student=student, question=q)
 		ans.append(d)
+		test.max_score += q.max_score
+	
 
 	values = {
 		'ans' : ans, 
@@ -221,8 +230,6 @@ def update_work(request, qn_id, student_id):
 		ans.actual_score = ac 
 		ans.save()
 		tt.save() 
-
-		print(ans)
 	return redirect('individual_work', qn.test.id, student.id)
 
 

@@ -39,7 +39,7 @@
               <td>{{ s.first_name }}</td>
               <td>{{ s.ml_score }}</td>
               <td>{{ s.actual_score }}</td>
-              <td>{{ s.actual_score }}</td>
+              <td>{{ test.max_score }}</td>
               <td><a href="{% url 'individual_work' test_id=test.id student_id=s.id %}" style="text-decoration: none;"><i class="bi bi-check2-square"> Verify</i></a></td>
             </tr>
           {% endfor %}
