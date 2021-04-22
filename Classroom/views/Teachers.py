@@ -145,15 +145,16 @@ def students_work(request, test_id):
 	test = get_object_or_404(Test, pk=test_id)
 	student = Enrollment.objects.filter(room=test.belongs).values('student')
 	attended_s = testTaken.objects.filter(test=test_id).values('student')
-	missed_s = testTaken.objects.filter(~Q(student__id__in=student.all()), test=test_id).values('student')
+	missed_s = [item for item in student if item not in attended_s]
 
+	d = [] 
+	for s in missed_s:
+		d.append(s['student'])
 
+	
 	attended_s = User.objects.filter(pk__in=attended_s).values()
-	missed_s = User.objects.filter(pk__in=missed_s).values()
-
-
-	print(student)
-	print(attended_s)
+	missed_s = User.objects.filter(pk__in=d).values()
+	student = User.objects.filter(pk__in=student).values()
 
 	values = {
 		'qns' : qns, 
