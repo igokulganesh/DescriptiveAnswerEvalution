@@ -10,6 +10,11 @@ from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 
+from sklearn.feature_extraction.text import TfidfTransformer
+import nltk,string, numpy
+import math
+from sklearn.feature_extraction.text import TfidfVectorizer
+
 
 @login_required(login_url='login')
 @student_required
@@ -47,6 +52,8 @@ def attend_test(request, test_id):
 	return render(request, 'students/attend_test.html', { 'qns' : qns, 'test' : test } )
 
 
+
+
 @login_required(login_url='login')
 @student_required
 def submit_test(request, test_id):
@@ -64,6 +71,39 @@ def submit_test(request, test_id):
 		id = str(q.id)
 		ans = request.POST[id] 
 		ans = Answer(student=student, question=q, answer_text=ans)
+
+		def LemTokens(tokens):
+			return [lemmer.lemmatize(token) for token in tokens]
+
+		def LemNormalize(text):
+			tokens = nltk.word_tokenize(text)
+			words = [w.lower() for w in tokens if w.isalnum()]
+			return LemTokens(words)
+
+		def cos_similarity(textlist):
+			tfidf = TfidfVec.fit_transform(textlist)
+			return (tfidf * tfidf.T).toarray()
+
+		
+		answer_key = q.key 		
+		answer = ans.answer_text
+
+		documents = [answer_key,answer]
+		documents = list(map(str, documents))
+		lemmer = nltk.stem.WordNetLemmatizer()
+
+		TfidfVec = TfidfVectorizer(tokenizer=LemNormalize, stop_words='english')
+
+		tf_matrix = cos_similarity(documents)
+		tfidfTran = TfidfTransformer(norm="l2")
+		tfidfTran.fit(tf_matrix)
+		tfidf_matrix = tfidfTran.transform(tf_matrix)
+		cos_similarity_matrix = (tfidf_matrix * tfidf_matrix.T).toarray()
+		score = cos_similarity_matrix[0][1]*q.max_score
+		mark = int(round(score))
+		
+		ans.actual_score = mark 
+		ans.ml_score = mark 
 		ans.save()
 		tt.actual_score += ans.actual_score
 		tt.ml_score += ans.ml_score
