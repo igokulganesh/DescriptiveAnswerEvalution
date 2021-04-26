@@ -1,1 +1,1 @@
-web: gunicorn EasyExam.wsgi --log-file
+web: gunicorn EasyExam.wsgi --log-file -
