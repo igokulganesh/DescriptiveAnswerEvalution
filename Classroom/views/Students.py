@@ -127,7 +127,7 @@ def review_test(request, test_id):
 		d['ans'] = get_object_or_404(Answer, student=student, question=qns[i]) # Answer.objects.filter(student=student, question=qns[i]) 
 		ans.append(d)
 		act += d['ans'].actual_score  
-		tot = qns[i].max_score 
+		tot += qns[i].max_score 
 
 	mark = "{} / {}".format(act, tot)
 	return render(request, 'students/review_test.html', { 'test' : test, 'ans' : ans, 'mark' : mark })
@@ -145,7 +145,7 @@ def assigned_test(request, class_id):
 		elif ( t.start_time == None or t.start_time < timezone.now()) and ( t.end_time == None or t.end_time > timezone.now()):
 			t.status = "Assigned"
 			tests.append(t)
-	
+
 	# Search
 	search = request.GET.get('search')
 
