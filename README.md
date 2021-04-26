@@ -1,2 +1,2 @@
-# EasyExam 
-  Evaluating Descriptive Answer using Machine Learning
+# [EasyExam](https://easyexam-igg.herokuapp.com/)
+  Evaluating Descriptive Answer using Cosine-Similarity Algorithm. 
