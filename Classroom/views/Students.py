@@ -172,13 +172,20 @@ def assigned_test(request, class_id):
 @login_required(login_url='login')
 @student_required
 def missing_test(request, class_id):
-	tests = Test.objects.filter(belongs=class_id)
-	taken = list(testTaken.objects.filter(~Q(student=request.user), test__in=tests).values("test"))
+	test = Test.objects.filter(belongs=class_id)
 
-	d = []
-	for t in taken: 
-		d.append( t['test'] )
-	tests = Test.objects.filter(pk__in=d, belongs=class_id)
+	tests = []
+	for t in test:
+		if(testTaken.objects.filter(test=t, student=request.user).exists()):
+			continue 
+		elif ( t.start_time == None or t.start_time < timezone.now()) and ( t.end_time == None or t.end_time > timezone.now()):
+			t.status = "Assigned"
+			tests.append(t)
+		elif(t.start_time and t.start_time > timezone.now()): # test is not yet started
+			t.status = "not"
+		else:
+			t.status = "late"
+			tests.append(t)
 
 	# Search
 	search = request.GET.get('search')
@@ -197,12 +204,6 @@ def missing_test(request, class_id):
 		tests = paginator.page(1)
 	except EmptyPage:
 		tests = paginator.page(paginator.num_pages)
-
-	for t in tests:
-		if ( t.start_time == None or t.start_time < timezone.now()) and ( t.end_time == None or t.end_time > timezone.now()):
-			t.status = "Assigned"
-		else:
-			t.status = "late"
 
 	room = get_object_or_404(Classroom, id=class_id)
 	return render(request, 'classroom/view_class.html', {'tests' : tests, 'room' : room } )
