@@ -136,14 +136,16 @@ def review_test(request, test_id):
 @login_required(login_url='login')
 @student_required
 def assigned_test(request, class_id):
-	tests = Test.objects.filter(belongs=class_id)
-	taken = list(testTaken.objects.filter(~Q(student=request.user), test__in=tests).values("test"))
+	test = Test.objects.filter(belongs=class_id)
 
-	d = []
-	for t in taken: 
-		d.append( t['test'] )
-	tests = Test.objects.filter(pk__in=d, belongs=class_id, start_time__lt=datetime.datetime.now(), end_time__gt=datetime.datetime.now()).order_by('-create_time')
-
+	tests = []
+	for t in test:
+		if(testTaken.objects.filter(test=t, student=request.user).exists()):
+			continue 
+		elif ( t.start_time == None or t.start_time < timezone.now()) and ( t.end_time == None or t.end_time > timezone.now()):
+			t.status = "Assigned"
+			tests.append(t)
+	
 	# Search
 	search = request.GET.get('search')
 
@@ -162,8 +164,6 @@ def assigned_test(request, class_id):
 	except EmptyPage:
 		tests = paginator.page(paginator.num_pages)
 
-	for t in tests:
-		t.status = "Assigned"
 		
 	room = get_object_or_404(Classroom, id=class_id)
 	return render(request, 'classroom/view_class.html', {'tests' : tests, 'room' : room } )
