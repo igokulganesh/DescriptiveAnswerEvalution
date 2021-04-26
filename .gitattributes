@@ -2,5 +2,7 @@
 static/assets/style.css linguist-detectable=false
 templates/base.html linguist-detectable=false
 templates/common.html linguist-detectable=false
+templates/classroom/home.html linguist-detectable=false
+templates/classroom/login.html linguist-detectable=false
 
 * text=auto
