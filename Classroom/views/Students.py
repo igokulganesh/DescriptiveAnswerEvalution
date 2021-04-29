@@ -11,8 +11,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 
 from sklearn.feature_extraction.text import TfidfTransformer
-import nltk,string, numpy
-import math
+import nltk, string, numpy, math
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 
@@ -57,6 +56,8 @@ def attend_test(request, test_id):
 @login_required(login_url='login')
 @student_required
 def submit_test(request, test_id):
+	nltk.data.path.append('../../nltk_data/') # For Lookup 
+	
 	qns = Question.objects.filter(test=test_id)
 	test = get_object_or_404(Test, id=test_id)
 	student = request.user 
