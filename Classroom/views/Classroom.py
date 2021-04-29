@@ -85,7 +85,6 @@ def people(request, class_id):
 	for e in enroll:
 		student.append(e.student)
 	
-	print(student)
 	return render(request, "classroom/people.html", { 'teacher' : teacher, 'student' : student })
 
 
