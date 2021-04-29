@@ -82,12 +82,14 @@
 
       <h2>{{ student.first_name }} Answers</h2>
       {% for q in ans %}
-        <div id="">
+        <div id="{{q.qns.max}}">
           <div class="card">
-            <div class="card-header" id="{{q.qns.id}}">
+            <div class="card-header collapse show" id="{{q.qns.id}}">
 
-              <button class="btn text-left" data-toggle="collapse" data-target="#{{q.ans.id}}" aria-expanded="true" aria-controls="{{q.ans.id}}">{{q.qns}}</button>
-              <br><br>
+              <button class="btn text-left collapsed" data-toggle="collapse" data-target="#{{q.ans.id}}" aria-expanded="false" 
+              aria-controls="{{q.ans.id}}">{{q.qns}}
+              </button>
+              <br>
               <form style="float: right;" method="post" action="{% url 'update_work' q.qns.id student.id %}">
                 {% csrf_token %}
                 <input class="col" type="number" min="0" max="{{ q.qns.max_score }}" name="actual_score" value="{{q.ans.actual_score}}">/{{ q.qns.max_score }} &nbsp;&nbsp;
@@ -95,7 +97,7 @@
               </form>
             </div>
 
-            <div id="{{q.ans.id}}" class="collapse" aria-labelledby="{{q.qns.id}}" data-parent="#accordion">
+            <div id="{{q.ans.id}}" class="collapse" aria-labelledby="{{q.ans.id}}" data-parent="#accordion">
               <div class="card-body">
                 {{q.ans}}
               </div>
